@@ -14,6 +14,8 @@ phpj.js is a shell script that automatically sets up a phpj framework applicatio
     * layouts
 
 ## Instructions
-from command line (Windows only) run
->node phpj
+- Initialize a new phpj project
+>node phpj-cli initialize
+- Generate a new phpj component
+>node phpj-cli generate \<MyComponentName\>
 
