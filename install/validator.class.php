@@ -1,13 +1,7 @@
 <?php
   class Validator {
-    
-    private $data;
-    private $schema;
 
-    function __construct($data, $schema) {
-      $this->data = $data;
-      $this->schema = $schema;
-    }
+    function __construct() { }
 
     private function validateLeafNode($input, $schema, $path) {
       $regexes = [
@@ -128,9 +122,9 @@
       return array_keys($arr) !== range(0, count($arr) - 1);
     }
 
-    public function validate() {
-      if (isset($this->data) && isset($this->schema)) {
-        return $this->validateLeafNode($this->data, $this->schema, 'root->');
+    public function validate($data, $schema) {
+      if (isset($data) && isset($schema)) {
+        return $this->validateLeafNode($data, $schema, 'root->');
       } else {
         return ['validator not properly initialized'];
       }
