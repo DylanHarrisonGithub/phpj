@@ -1,6 +1,5 @@
 <?php
 
-  // todo: validate layout with component schemas 
   return function($layout, $components) {
     $html = "";
     foreach($layout as $value) {
@@ -8,4 +7,5 @@
     }
     return $html;
   }
+  
 ?>

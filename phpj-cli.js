@@ -169,18 +169,23 @@ if (args.length > 0) {
       createDir('/phpj/engine/src');
       createDir('/phpj/layouts');
       createDir('/phpj/services');
+	  createDir('/phpj/routes');
       createDir('/phpj/services/render');
       createDir('/phpj/services/validation');
-      moveFile('./install/webpack.config.js', './webpack.config.js');
+	  createDir('/phpj/services/authentication');
+      createDir('/phpj/services/crudDB');
+	  createDir('/phpj/services/router');
       moveFile('./install/phpj.js', './phpj/engine/src/phpj.js');
       moveFile('./install/engine.js', './phpj/engine/src/engine.js');
       moveFile('./install/components.php', './phpj/components/components.php');
       moveFile('./install/render.service.php', './phpj/services/render/render.service.php');
       moveFile('./install/validation.service.php', './phpj/services/validation/validation.service.php');
       moveFile('./install/validator.class.php', './phpj/services/validation/validator.class.php');
-      moveFile('./install/validator.class.php', './phpj/services/validation/validator.class.php');
+	  moveFile('./install/authentication.service.php', './phpj/services/authentication/authentication.service.php');
+	  moveFile('./install/router.service.php', './phpj/services/router/router.service.php');
       moveFile('./install/services.php', './phpj/services/services.php');
       moveFile('./install/index.php', './index.php');
+      moveFile('./install/webpack.config.js', './webpack.config.js');
       runScript(shellScript2).then(n => {console.log('setup complete')});
     });
   } else if (args.length > 1) {
