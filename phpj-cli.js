@@ -1,21 +1,10 @@
 const exec = require('child_process').exec;
 const fs = require('fs');
 
-
 const [,, ... args] = process.argv;
 
-
-let shellScript1 = [
-  `echo initializing node project..`,
-	`npm init -y`,
-	`echo installing webpack. please wait..`,
-	`npm install webpack webpack-cli --save-dev`
-];
-let shellScript2 = [
-  `echo creating phpjdemo component`,
-  `node phpj-cli generate phpjdemo`,
-  `echo start phpj project with node node_modules/webpack/bin/webpack --watch`
-];
+var compilingJS = false;
+var compilingCSS = false;
 
 function _runScript(script, i, res) {
 	exec(script[i], (error, stdout, stderr) => {
@@ -71,6 +60,10 @@ const writeLine = (filePath, lineNumber, text) => {
   });
 }
 
+const getSubDirs = (path) => {
+	return fs.readdirSync(path, {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
+}
+
 const moveFile = (oldPath, newPath, callback) => {
   fs.rename(oldPath, newPath, err => {
     if (err) {
@@ -81,13 +74,13 @@ const moveFile = (oldPath, newPath, callback) => {
   });
 }
 let templates = {};
-if (args.length > 1) {
+if (args.length > 2) {
 	templates = {
 	  component: `
 
 	  // Automatically generated template
 
-	  module.exports = class ${args[1].charAt(0).toUpperCase() + args[1].substring(1)}{
+	  module.exports = class ${args[2].charAt(0).toUpperCase() + args[2].substring(2)}{
 
 		constructor(stateID, params) {
 
@@ -121,9 +114,9 @@ if (args.length > 1) {
 		return function($params, $components) {
 
 		  $validator = require(__DIR__.'/../../services/validation/validation.service.php');
-		  $validationErrs = $validator(
-			$params,
-			require(__DIR__.'/` + args[1] + `.schema.php')
+		  $validationErrs = $validator->validate(
+				$params,
+				require(__DIR__.'/` + args[2] + `.schema.php')
 		  );
 		  
 		  $html = "";
@@ -136,9 +129,9 @@ if (args.length > 1) {
 		  } else {
 			ob_start(); ?>
 			  
-			  <div phpjcomponent="${args[1]}">
+			  <div phpjcomponent="${args[2]}">
 				
-				${args[1]} component
+				${args[2]} component
 				<!--
 				  //
 				  // PHP template code here..
@@ -156,46 +149,98 @@ if (args.length > 1) {
 
 	  ?>
 	  `
-	}	
+	,
+	route: {
+		route: `
+<?php
+
+// Automatically generated template
+
+	return function($params) {
+
+		//
+		// Route logic here..
+		//
+
+	}
+
+?>
+`,
+		scheema: `
+<?php
+
+// Automatically generated template
+
+	return [
+
+		//
+		// Route params schema here..
+		//
+
+	];
+?>
+`
+		}	
+	}
 }
 
-
 if (args.length > 0) {
-  if (args[0].toLowerCase() === 'init' || args[0].toLowerCase() === 'initialize') {
-    runScript(shellScript1).then(n => {
-      createDir('phpj');
-      createDir('/phpj/components');
-      createDir('/phpj/engine');
-      createDir('/phpj/engine/src');
-      createDir('/phpj/layouts');
-      createDir('/phpj/services');
-	  createDir('/phpj/routes');
-      createDir('/phpj/services/render');
-      createDir('/phpj/services/validation');
-	  createDir('/phpj/services/authentication');
-      createDir('/phpj/services/crudDB');
-	  createDir('/phpj/services/router');
-      moveFile('./install/phpj.js', './phpj/engine/src/phpj.js');
-      moveFile('./install/engine.js', './phpj/engine/src/engine.js');
-      moveFile('./install/components.php', './phpj/components/components.php');
-      moveFile('./install/render.service.php', './phpj/services/render/render.service.php');
-      moveFile('./install/validation.service.php', './phpj/services/validation/validation.service.php');
-      moveFile('./install/validator.class.php', './phpj/services/validation/validator.class.php');
-	  moveFile('./install/authentication.service.php', './phpj/services/authentication/authentication.service.php');
-	  moveFile('./install/router.service.php', './phpj/services/router/router.service.php');
-      moveFile('./install/services.php', './phpj/services/services.php');
-      moveFile('./install/index.php', './index.php');
-      moveFile('./install/webpack.config.js', './webpack.config.js');
-      runScript(shellScript2).then(n => {console.log('setup complete')});
-    });
-  } else if (args.length > 1) {
+	if (args.length == 1) {
+		if (args[0].toLowerCase() === 'watch') {
+			console.log('watching project..');
+			fs.watch('./', {'recursive': true}, (event, filename) => {
+				if (filename && filename.length > 2 && compilingJS === false) {
+					if (filename.substr(filename.length - 3) === ".js") {
+						if (filename !== "phpj\engine\phpj.js") {			
+							compilingJS = true;
+							console.log('javascript change detected: ', event, filename);
+							runScript([`node node_modules/webpack/bin/webpack`]).then(n  => {
+								compilingJS = false; 
+								console.log('watching project..');
+							});
+						}
+					} else if (filename.substr(filename.length - 4) === ".css") {
+						if (filename !== "components.style.css") {
+							compilingCSS = true;
+							console.log('css change detected: ', event, filename);
+							let concat = `
+/* phpj generated css */
+`;
+							getSubDirs('./phpj/components').forEach(subdir => {
+								fs.readdirSync('./phpj/components/' + subdir).filter(fname => fname.endsWith('.css')).forEach(stylesheet => {
+									concat += `
+/* ${stylesheet} */
+` + fs.readFileSync('./phpj/components/' + subdir + '/' + stylesheet).toString();
+								})
+							});
+							createFile('./components.style.css', concat);
+							compilingCSS = false;
+							console.log('watching project..');
+						}
+					}
+				}
+			});
+		}
+	} else if (args.length > 2) {
     if (args[0].toLowerCase() === 'g' || args[0].toLowerCase() === 'generate') {
-      createDir('/phpj/components/' + args[1]);
-      createFile('./phpj/components/' + args[1] + '/' + args[1] + '.component.js', templates.component);
-      createFile('./phpj/components/' + args[1] + '/' + args[1] + '.schema.php', templates.schema);
-      createFile('./phpj/components/' + args[1] + '/' + args[1] + '.template.php', templates.template);
-      writeLine('./phpj/components/components.php', 2, `    '${args[1]}' => require(__DIR__.'/${args[1]}/${args[1]}.template.php'),`);
-      writeLine('./phpj/engine/src/phpj.js', 4, `      ${args[1]}: require('../../components/${args[1]}/${args[1]}.component'),`);
+			if (args[1].toLowerCase() === 'c' || args[1].toLowerCase() === 'component') {
+				createDir('/phpj/components/' + args[2]);
+				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.component.js', templates.component);
+				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.schema.php', templates.schema);
+				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.template.php', templates.template);
+				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.style.css', "");
+				writeLine('./phpj/components/components.php', 2, `    '${args[2]}' => require(__DIR__.'/${args[2]}/${args[2]}.template.php'),`);
+				writeLine('./phpj/engine/src/phpj.js', 4, `      ${args[2]}: require('../../components/${args[2]}/${args[2]}.component'),`);
+			} else if (args[1].toLowerCase() === 'r' || args[1].toLowerCase() === 'route') {
+				createDir('/phpj/routes/' + args[2]);
+				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.route.php', templates.route.route);
+				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.scheema.php', templates.route.scheema);
+				writeLine('./phpj/services/router/router.service.php', 2, `    '${args[2]}' => [
+					'privelege' => 'guest',
+					'schema' => require(__DIR__.'/../../routes/${args[2]}/${args[2]}.scheema.php'),
+					'route' => require(__DIR__.'/../../routes/${args[2]}/${args[2]}.template.php')
+		],`);
+			}
     }
   }
 }

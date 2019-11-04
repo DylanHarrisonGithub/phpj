@@ -2,6 +2,7 @@
   window.phpj = { 
     state: [],
     components: {
+      phpjdemo: require('../../components/phpjdemo/phpjdemo.component'),
     },
     engine: require('./engine'),
     log: [],

@@ -1,0 +1,24 @@
+
+/* phpj generated css */
+
+/* phpjdemo.style.css */
+.phpjdemocomponent-h1 {
+  text-align: center;
+}
+.phpjdemocomponent-h-center {
+  text-align: center;
+  margin-top: 100px;
+}
+.phpjdemocomponent-button {
+  padding: 20px;
+  background-color: blueviolet;
+  color: white;
+  border: 0px;
+  border-radius: 5px;
+  box-shadow: 4px 4px 8px black;
+  text-decoration: none;
+}
+.phpjdemocomponent-button:hover {
+  cursor: pointer;
+  box-shadow: 4px 4px 6px black;
+}

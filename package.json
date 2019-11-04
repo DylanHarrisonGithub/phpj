@@ -1,0 +1,24 @@
+{
+  "name": "phpj",
+  "version": "1.0.0",
+  "description": "Minimalistic component based php and javascript framework",
+  "main": "phpj-cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DylanHarrisonGithub/phpj.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DylanHarrisonGithub/phpj/issues"
+  },
+  "homepage": "https://github.com/DylanHarrisonGithub/phpj#readme",
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
