@@ -111,10 +111,9 @@ if (args.length > 2) {
 
 		// Automatically generated template
 
-		return function($params, $components) {
+		return function($params, $phpj) {
 
-		  $validator = require(__DIR__.'/../../services/validation/validation.service.php');
-		  $validationErrs = $validator->validate(
+		  $validationErrs = $phpj['services']['validation']->validate(
 				$params,
 				require(__DIR__.'/` + args[2] + `.schema.php')
 		  );
@@ -156,7 +155,7 @@ if (args.length > 2) {
 
 // Automatically generated template
 
-	return function($params) {
+	return function($params, $phpj) {
 
 		//
 		// Route logic here..
@@ -166,7 +165,7 @@ if (args.length > 2) {
 
 ?>
 `,
-		scheema: `
+		schema: `
 <?php
 
 // Automatically generated template
@@ -234,12 +233,16 @@ if (args.length > 0) {
 			} else if (args[1].toLowerCase() === 'r' || args[1].toLowerCase() === 'route') {
 				createDir('/phpj/routes/' + args[2]);
 				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.route.php', templates.route.route);
-				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.scheema.php', templates.route.scheema);
-				writeLine('./phpj/services/router/router.service.php', 2, `    '${args[2]}' => [
-					'privelege' => 'guest',
-					'schema' => require(__DIR__.'/../../routes/${args[2]}/${args[2]}.scheema.php'),
-					'route' => require(__DIR__.'/../../routes/${args[2]}/${args[2]}.template.php')
+				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.schema.php', templates.route.schema);
+				writeLine('./phpj/routes/routes.php', 2, `    '${args[2]}' => [
+			'privelege' => ${args.length > 3 ? JSON.stringify(args.slice(3, args.length)) : "['guest']"},
+			'schema' => require(__DIR__.'/${args[2]}/${args[2]}.schema.php'),
+			'route' => require(__DIR__.'/${args[2]}/${args[2]}.route.php')
 		],`);
+			} else if (args[1].toLowerCase() === 's' || args[1].toLowerCase() === 'service') {
+				createDir('/phpj/services/' + args[2]);
+				createFile('./phpj/services/' + args[2] + '/' + args[2] + '.service.php', templates.route.route);
+				writeLine('./phpj/services/services.php', 2, `    '${args[2]}' => require(__DIR__.'/${args[2]}/${args[2]}.service.php'),`);
 			}
     }
   }
