@@ -124,7 +124,7 @@
 
     public function validate($data, $schema) {
       if (isset($data) && isset($schema)) {
-        return $this->validateLeafNode($data, $schema, 'root->');
+        return $this->validateTree($data, $schema, 'root->');
       } else {
         return ['validator not properly initialized'];
       }

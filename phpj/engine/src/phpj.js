@@ -6,9 +6,7 @@
     },
     engine: require('./engine'),
     log: [],
-    config: {
-      developmentMode: true
-    }
+    config: require('./config')
   }
   phpj.engine.mutationObserver.observe(document, { 
     childList: true,

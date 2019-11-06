@@ -3,10 +3,9 @@
 
 		// Automatically generated template
 
-		return function($params, $components) {
+		return function($params, $phpj) {
 
-		  $validator = require(__DIR__.'/../../services/validation/validation.service.php');
-		  $validationErrs = $validator->validate(
+		  $validationErrs = $phpj['services']['validation']->validate(
 				$params,
 				require(__DIR__.'/phpjdemo.schema.php')
 		  );

@@ -1,5 +1,6 @@
 <?php
   return [
+    'request' => require(__DIR__.'/request/request.service.php'),
     'router' => require(__DIR__.'/router/router.service.php'),
     'crudDB' => require(__DIR__.'/crudDB/crudDB.service.php'),
     'authentication' => require(__DIR__.'/authentication/authentication.service.php'),
