@@ -1,6 +1,6 @@
  <?php
 
   require_once(__DIR__.'/validator.class.php');
-  return new Validator();
+  return array(new Validator(), 'validate');
   
 ?>

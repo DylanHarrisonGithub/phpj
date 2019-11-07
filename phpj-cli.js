@@ -112,20 +112,6 @@ if (args.length > 2) {
 		// Automatically generated template
 
 		return function($params, $phpj) {
-
-		  $validationErrs = $phpj['services']['validation']->validate(
-				$params,
-				require(__DIR__.'/` + args[2] + `.schema.php')
-		  );
-		  
-		  $html = "";
-		  if (count($validationErrs) > 0) {
-			ob_start(); ?>
-			  <h1 class="theme-alert text-center"><?php echo var_dump($validationErrs) ?></h1>
-			<?php
-			$html .= ob_get_clean();
-			ob_flush();
-		  } else {
 			ob_start(); ?>
 			  
 			  <div phpjcomponent="${args[2]}">
@@ -140,9 +126,8 @@ if (args.length > 2) {
 			  </div>
 
 			<?php
-			$html .= ob_get_clean();
+			$html = ob_get_clean();
 			ob_flush();
-		  }
 		  return $html;
 		};
 
@@ -228,7 +213,10 @@ if (args.length > 0) {
 				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.schema.php', templates.schema);
 				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.template.php', templates.template);
 				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.style.css', "");
-				writeLine('./phpj/components/components.php', 2, `    '${args[2]}' => require(__DIR__.'/${args[2]}/${args[2]}.template.php'),`);
+				writeLine('./phpj/components/components.php', 2, `    '${args[2]}' => [
+			'template' => require(__DIR__.'/${args[2]}/${args[2]}.template.php'),
+			'schema' => require(__DIR__.'/${args[2]}/${args[2]}.schema.php')
+		],`);
 				writeLine('./phpj/engine/src/phpj.js', 4, `      ${args[2]}: require('../../components/${args[2]}/${args[2]}.component'),`);
 			} else if (args[1].toLowerCase() === 'r' || args[1].toLowerCase() === 'route') {
 				createDir('/phpj/routes/' + args[2]);

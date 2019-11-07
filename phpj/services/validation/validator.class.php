@@ -81,32 +81,33 @@
       $errors = [];
       foreach($schema as $key => $value) {
         if (isset($input[$key])) {
-          if (gettype($schema[$key]['type']) === 'array') {
-            if (gettype($input[$key]) === 'array' && !$this->isAssoc($input[$key])) {
-              foreach($input[$key] as $i => $item) {
-                $errors = array_merge($errors, $this->validateTree($item, $schema[$key]['type'], $path.$key.'['.$i.']->'));
-              }
-            } else {
-              $errors = array_merge($errors, $this->validateTree($input[$key], $schema[$key]['type'], $path.$key.'->'));
-            }
-          } else {
-          
-            if ($schema[$key]['type'] === gettype($input[$key])) {
-              if (in_array($schema[$key]['type'], ['boolean', 'integer', 'double', 'string'])) {
-                $errors = array_merge($errors, $this->validateLeafNode($input[$key], $schema[$key], $path.$key ));
-              } else {
-                array_push($errors, 'Unsupported type at '.$path.$key);
-              }
-            } else {
-              if (gettype($input[$key]) === 'array') {
+          if (isset($schema[$key]['type'])) {   #no further validation of subtree if data type is not specified
+            if (gettype($schema[$key]['type']) === 'array') {
+              if (gettype($input[$key]) === 'array' && !$this->isAssoc($input[$key])) {
                 foreach($input[$key] as $i => $item) {
-                  $errors = array_merge($errors, $this->validateLeafNode($item, $schema[$key], $path.$key.'['.$i.']'));
+                  $errors = array_merge($errors, $this->validateTree($item, $schema[$key]['type'], $path.$key.'['.$i.']->'));
                 }
               } else {
-                array_push($errors, 'Type missmatch at '.$path.$key);
+                $errors = array_merge($errors, $this->validateTree($input[$key], $schema[$key]['type'], $path.$key.'->'));
+              }
+            } else {
+            
+              if ($schema[$key]['type'] === gettype($input[$key])) {
+                if (in_array($schema[$key]['type'], ['boolean', 'integer', 'double', 'string'])) {
+                  $errors = array_merge($errors, $this->validateLeafNode($input[$key], $schema[$key], $path.$key ));
+                } else {
+                  array_push($errors, 'Unsupported type at '.$path.$key);
+                }
+              } else {
+                if (gettype($input[$key]) === 'array') {
+                  foreach($input[$key] as $i => $item) {
+                    $errors = array_merge($errors, $this->validateLeafNode($item, $schema[$key], $path.$key.'['.$i.']'));
+                  }
+                } else {
+                  array_push($errors, 'Type missmatch at '.$path.$key);
+                }
               }
             }
-          
           }
         } else {
           if (isset($schema[$key]['required']) && $schema[$key]['required']) {
