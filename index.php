@@ -11,7 +11,7 @@
 <body>
   <?php
     $phpj = require(__DIR__.'/phpj/phpj.php');
-    echo $phpj['components']['phpjdemo']([], $phpj);
+    echo $phpj['components']['phpjdemo']['template']([], $phpj);
   ?>
 </body>
 </html>

@@ -4,12 +4,13 @@
       if (isset($phpj['routes'][$request['route']])) {
 
         // validation layer
-        $validationErrors = $phpj['services']['validation']->validate(
+        $validationErrors = $phpj['services']['validation'](
           $request['params'],
           $phpj['routes'][$request['route']]['schema']
         );
+        
         if (count($validationErrors) == 0) {
-          
+
           // authentication layer
           if (in_array('guest', $phpj['routes'][$request['route']]['privelege'])) {
             return $phpj['routes'][$request['route']]['route']($request['params'], $phpj);
