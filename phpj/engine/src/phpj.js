@@ -4,9 +4,10 @@
     components: {
       phpjdemo: require('../../components/phpjdemo/phpjdemo.component'),
     },
+    services: require('./services/services'),
     engine: require('./engine'),
+    config: require('./config'),
     log: [],
-    config: require('./config')
   }
   phpj.engine.mutationObserver.observe(document, { 
     childList: true,
