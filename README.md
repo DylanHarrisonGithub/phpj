@@ -9,6 +9,9 @@ Minimalistic component based php and javascript framework
 - Generate a new phpj component
     >node phpj-cli generate component \<MyComponentName\>
 - Generate a new phpj route
-    >node phpj-cli generate route \<MyRouteName\> ?\<privelege\>
+    >node phpj-cli generate route \<MyRouteName\> \<?privelege\> \<?privelege\> ...
 - Generate a new phpj service
     >node phpj-cli generate service \<MyServiceName\>
+
+- Generate a new javascript phpj service
+    >node phpj-cli generate jservice \<MyServiceName\>

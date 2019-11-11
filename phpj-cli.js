@@ -232,6 +232,11 @@ if (args.length > 0) {
 				createFile('./phpj/services/' + args[2] + '/' + args[2] + '.service.php', templates.route.route);
 				writeLine('./phpj/services/services.php', 2, `    '${args[2]}' => require(__DIR__.'/${args[2]}/${args[2]}.service.php'),`);
 			}
+			else if (args[1].toLowerCase() === 'js' || args[1].toLowerCase() === 'jservice') {
+				createDir('/phpj/engine/src/services/' + args[2]);
+				createFile('./phpj/engine/src/services/' + args[2] + '/' + args[2] + '.service.js', "module.exports = {}");
+				writeLine('./phpj/engine/src/services/services.js', 1, `  ${args[2]}: require('./${args[2]}/${args[2]}.service.js'),`);
+			}
     }
   }
 }
