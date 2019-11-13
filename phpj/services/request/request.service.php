@@ -23,9 +23,16 @@
     if (isset($body['params'])) $params = $body['params'];
     if (isset($body['token'])) $token = $body['token'];
     if (!empty($_FILES)) $files = $_FILES;
+    if (!$route) { // get requests
+      echo json_encode([
+        'fullURI' => $_SERVER['REQUEST_URI'],
+        'basename' => basename($_SERVER['REQUEST_URI']),
+        'headers' => getallheaders()
+      ]);
+    } 
     return [
       'route' => $route,
-      'params' => $params,
+      'params' => array_merge(array_merge($params, getallheaders()), ['getshit' => basename($_SERVER['REQUEST_URI'])]),
       'token' => $token,
       'files' => $files
     ];

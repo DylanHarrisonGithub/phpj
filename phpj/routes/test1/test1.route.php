@@ -2,7 +2,8 @@
 	return function($params, $phpj) {
 		return [
 			'success' => true,
-			'message' => 'the route works.'
+			'message' => 'the route works.',
+			'params' => $params
 		];
 	}
 ?>
