@@ -9,14 +9,7 @@
 		  //
 		  // Initialize component here..
 		  //
-			phpj.engine.request('test1', {'val': 'testval'}).then(res => console.log(res)).catch(err => console.log(err));
-			console.log(phpj.services.validation.validate(
-				{'data': 5}, {
-					'data': {
-						'required': true,
-						'type': 'string'
-					}
-				} ));
+			phpj.services.http.get('test1', {'val': 'testval'}, {'bearer': 'what up blintz!'}).then(res => console.log(res)).catch(err => console.log(err));
 		}
 
 	  }
