@@ -10,6 +10,7 @@ module.exports = {
   },
   get: (route, params, headers) => {  // read
     let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    queryString.length ? queryString = "?" + queryString : "";
     return fetch(
       phpj.config.URI[phpj.config.ENVIRONMENT] + 'api.php/' + route + '/' + queryString, {
         method: "GET",
