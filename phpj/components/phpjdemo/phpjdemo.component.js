@@ -9,7 +9,7 @@
 		  //
 		  // Initialize component here..
 		  //
-			phpj.services.http.get('test1', {'val': 'testval'}, {'bearer': 'what up blintz!'}).then(res => console.log(res)).catch(err => console.log(err));
+			phpj.services.http.get('test12', {'val': 'testval'}, {'bearer': 'test token'}).then(res => console.log(res)).catch(err => console.log(err));
 		}
 
 	  }

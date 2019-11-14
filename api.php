@@ -8,6 +8,6 @@
 
   $phpj = require(__DIR__.'/phpj/phpj.php');
   $request = $phpj['services']['request']();
-  echo json_encode($phpj['services']['router']($request, $phpj));
+  echo $phpj['services']['router']($request, $phpj);
 
 ?>

@@ -1,9 +1,9 @@
 <?php
 	return function($params, $phpj) {
-		return [
+		return json_encode([
 			'success' => true,
 			'message' => 'the route works.',
 			'params' => $params
-		];
+		]);
 	}
 ?>
