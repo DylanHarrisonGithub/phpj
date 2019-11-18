@@ -38,14 +38,13 @@
 
     // files
     $files = null;
-    if (!empty($_FILES)) $files = $_FILES;
+    if (!empty($_FILES)) $params['files'] = $_FILES;
 
     return [
       'method' => $_SERVER['REQUEST_METHOD'],
       'route' => $route,
       'params' => $params,
-      'token' => $token,
-      'files' => $files
+      'token' => $token
     ];
     
   }

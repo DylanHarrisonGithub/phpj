@@ -14,7 +14,8 @@
 					</div>
 				
 				</div>
-
+				<!-- event.target.files -->
+				<input id="fileupload" name="myfile" type="file" onchange="phpj.services.http.upload('upload', event.target.files.item(0)).then(res => console.log(res)).catch(err => console.log(err))"/>
 			<?php
 			$html = ob_get_clean();
 			ob_flush();
