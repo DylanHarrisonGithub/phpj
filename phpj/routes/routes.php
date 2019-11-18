@@ -1,5 +1,10 @@
 <?php
   return [
+    'upload' => [
+			'privelege' => ['guest'],
+			'schema' => require(__DIR__.'/upload/upload.schema.php'),
+			'route' => require(__DIR__.'/upload/upload.route.php')
+		],
     'register' => [
 			'privelege' => ['guest'],
 			'schema' => require(__DIR__.'/register/register.schema.php'),
