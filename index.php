@@ -13,5 +13,7 @@
     $phpj = require(__DIR__.'/phpj/phpj.php');
     echo $phpj['components']['phpjdemo']['template']([], $phpj);
   ?>
+  <br>
+  <p><?php echo var_dump($phpj['services']['directory']['delete']('fart')); ?></p>
 </body>
 </html>

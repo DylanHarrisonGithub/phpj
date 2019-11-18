@@ -53,23 +53,6 @@ module.exports = {
       }
     }
   },
-  request: (route, params) => {
-    return fetch(
-      phpj.config.URI[phpj.config.ENVIRONMENT] + 'api.php', {
-        method: "POST",
-        body: JSON.stringify({
-          route: route,
-          token: {
-            id: '1234',
-            username: 'fart',
-            privelege: 'admin'
-          },
-          files: null,
-          params: params
-        })
-      }
-    ).then(res => res.json());
-  },
   log: (msg) => {
     if (phpj.config.ENVIRONMENT === "DEVELOPMENT") {
       phpj.log.push(msg);
