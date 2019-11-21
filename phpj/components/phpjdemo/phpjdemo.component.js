@@ -19,6 +19,14 @@
 			phpj.services.http.post('login', {'username': 'myusername', 'password': 'abcDEF123!@#'}).then(res => {
 				console.log(res);
 			}).catch(err => console.log(err));
+
+			console.log(phpj.services.storage.setItem('token', {
+				id: 0,
+				username: 'testuser',
+				email: 'myemail@mail.com',
+				signature: 'asdfjklfheioawhiovnaiose234@#$@#$'
+			}));
+			console.log(phpj.services.storage.getItem('token'));
 		}
 
 	  }

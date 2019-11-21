@@ -1,5 +1,10 @@
 <?php
   return [
+    'cookie' => [
+			'privelege' => ['guest'],
+			'schema' => require(__DIR__.'/cookie/cookie.schema.php'),
+			'route' => require(__DIR__.'/cookie/cookie.route.php')
+		],
     'upload' => [
 			'privelege' => ['guest'],
 			'schema' => require(__DIR__.'/upload/upload.schema.php'),
