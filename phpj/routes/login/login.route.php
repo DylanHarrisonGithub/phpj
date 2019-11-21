@@ -18,7 +18,8 @@
 					'privelege' => 'admin'
 				],
 				$phpj['config']['SERVER_SECRET']
-			)
+			),
+			'cookie' => $_COOKIE
 		]);
 
 	}
