@@ -1,0 +1,7 @@
+# internal routing
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule (.*)$ /phpj/api.php/$1 [NC,L]
+</IfModule>

@@ -2,49 +2,49 @@
 
   return [
     'generateToken' => function($user, $SERVER_SECRET) {
-      if (
-        isset($user['id']) &&
-        isset($user['username']) &&
-        isset($user['email'])
-      ) {
-        $now = time();
-        $privelege = isset($user['privelege']) ? $user['privelege'] : 'guest';
-        return [
-          'id' => $user['id'],
-          'username' => $user['username'],
-          'email' => $user['email'],
-          'privelege' => $privelege,
-          'timestamp' => $now,
-          'signature' => password_hash(
-            $user['id']
-            .$user['username']
-            .$user['email']
-            .$privelege
-            .$now
-            .$SERVER_SECRET,
-            PASSWORD_DEFAULT
-          )
-        ];
-      } 
-      return null;
-    },
-    'verifyToken' => function($token, $SERVER_SECRET) {
-      if (
-        isset($token['id']) &&
-        isset($token['username']) &&
-        isset($token['email']) &&
-        isset($token['privelege']) &&
-        isset($token['timestamp']) &&
-        isset($token['signature'])
-      ) {
-        if (password_verify(
-          $token['id'].$token['username'].$token['email'].$token['privelege'].$token['timestamp'].$SERVER_SECRET,
-          $token['signature']
-        )) {
-          return true;
+      
+      $token = [];
+      foreach ($user as $key => $value) {
+        if ($key !== 'signature') {
+          $token[$key] = $value;
         }
       }
+      if (!isset($token['timestamp'])) $token['timestamp'] = time();
+      if (!isset($token['privelege'])) $token['privelege'] = 'guest';
+      
+      // tokens are unique up to permutation
+      ksort($token);
+      
+      $payload = '';
+      foreach ($token as $value) {
+        $payload .= $value;
+      }
+      $token['signature'] = password_hash($payload.$SERVER_SECRET, PASSWORD_DEFAULT);
+
+      return $token;
+
+    },
+    'verifyToken' => function($token, $SERVER_SECRET) {
+
+      if (isset($token['signature'])) {
+
+        ksort($token);
+        $payload = '';
+        
+        foreach ($token as $key => $value) {
+          if ($key !== 'signature') {
+            $payload .= $value;
+          }
+        }
+        
+        if (password_verify($payload.$SERVER_SECRET, $token['signature'])) {
+          return true;
+        }
+
+      }
+      
       return false;
+
     }
   ];
   

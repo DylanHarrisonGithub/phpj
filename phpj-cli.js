@@ -78,62 +78,62 @@ if (args.length > 2) {
 	templates = {
 	  component: `
 
-	  // Automatically generated template
+// Automatically generated template
 
-	  module.exports = class ${args[2].charAt(0).toUpperCase() + args[2].substring(2)}{
+module.exports = class ${(args[2].charAt(0).toUpperCase() + args[2].substring(2)).replace('-', '')}{
 
-		constructor(stateID, params) {
+	constructor(stateID, params) {
 
-		  //
-		  // Initialize component here..
-		  //
+		//
+		// Initialize component here..
+		//
 
-		}
+	}
 
-	  }
-	  `,
+}
+`		,
 	  schema: `
-	  <?php
-		
-		// Automatically generated template
+<?php
 
-		return [
+// Automatically generated template
 
-		  //
-		  // Component params schema here..
-		  //
+	return [
 
-		];
-	  ?>
-	  `,
+		//
+		// Component params schema here..
+		//
+
+	];
+
+?>
+`		,
 	  template: `
-	  <?php
+<?php
 
-		// Automatically generated template
+// Automatically generated template
 
-		return function($params, $phpj) {
-			ob_start(); ?>
-			  
-			  <div phpjcomponent="${args[2]}">
-				
-				${args[2]} component
-				<!--
-				  //
-				  // PHP template code here..
-				  //
-				-->
+	return function($params, $phpj) {
+		ob_start(); ?>
+			
+			<div phpjcomponent="${args[2]}">
+			
+			${args[2]} component
+			<!--
+				//
+				// PHP template code here..
+				//
+			-->
 
-			  </div>
+			</div>
 
-			<?php
-			$html = ob_get_clean();
-			ob_flush();
-		  return $html;
-		};
+		<?php
+		$html = ob_get_clean();
+		ob_flush();
+		return $html;
+	};
 
-	  ?>
-	  `
-	,
+?>
+`,
 	route: {
 		route: `
 <?php
@@ -162,6 +162,7 @@ if (args.length > 2) {
 		//
 
 	];
+
 ?>
 `
 		}	
@@ -217,13 +218,14 @@ if (args.length > 0) {
 			'template' => require(__DIR__.'/${args[2]}/${args[2]}.template.php'),
 			'schema' => require(__DIR__.'/${args[2]}/${args[2]}.schema.php')
 		],`);
-				writeLine('./phpj/engine/src/phpj.js', 4, `      ${args[2]}: require('../../components/${args[2]}/${args[2]}.component'),`);
+				writeLine('./phpj/engine/src/phpj.js', 4, `      '${args[2]}': require('../../components/${args[2]}/${args[2]}.component'),`);
 			} else if (args[1].toLowerCase() === 'r' || args[1].toLowerCase() === 'route') {
 				createDir('/phpj/routes/' + args[2]);
 				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.route.php', templates.route.route);
 				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.schema.php', templates.route.schema);
 				writeLine('./phpj/routes/routes.php', 2, `    '${args[2]}' => [
-			'privelege' => ${args.length > 3 ? JSON.stringify(args.slice(3, args.length)) : "['guest']"},
+			'method' => ${args.length > 3 ? JSON.stringify([args[3]]) : "['GET']"},
+			'privelege' => ${args.length > 4 ? JSON.stringify(args.slice(4, args.length)) : "['guest']"},
 			'schema' => require(__DIR__.'/${args[2]}/${args[2]}.schema.php'),
 			'route' => require(__DIR__.'/${args[2]}/${args[2]}.route.php')
 		],`);
@@ -235,7 +237,7 @@ if (args.length > 0) {
 			else if (args[1].toLowerCase() === 'js' || args[1].toLowerCase() === 'jservice') {
 				createDir('/phpj/engine/src/services/' + args[2]);
 				createFile('./phpj/engine/src/services/' + args[2] + '/' + args[2] + '.service.js', "module.exports = {}");
-				writeLine('./phpj/engine/src/services/services.js', 1, `  ${args[2]}: require('./${args[2]}/${args[2]}.service.js'),`);
+				writeLine('./phpj/engine/src/services/services.js', 1, `  '${args[2]}': require('./${args[2]}/${args[2]}.service.js'),`);
 			}
     }
   }

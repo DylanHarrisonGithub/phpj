@@ -1,29 +1,28 @@
 <?php
   return [
-    'cookie' => [
+    'user-register' => [
+			'method' => ["POST"],
 			'privelege' => ['guest'],
-			'schema' => require(__DIR__.'/cookie/cookie.schema.php'),
-			'route' => require(__DIR__.'/cookie/cookie.route.php')
-		],
-    'upload' => [
-			'privelege' => ['guest'],
-			'schema' => require(__DIR__.'/upload/upload.schema.php'),
-			'route' => require(__DIR__.'/upload/upload.route.php')
+			'schema' => require(__DIR__.'/user-register/user-register.schema.php'),
+			'route' => require(__DIR__.'/user-register/user-register.route.php')
 		],
     'register' => [
+			'method' => ['GET'],
 			'privelege' => ['guest'],
 			'schema' => require(__DIR__.'/register/register.schema.php'),
 			'route' => require(__DIR__.'/register/register.route.php')
 		],
     'login' => [
-			'privelege' => ["guest","user","admin"],
+			'method' => ['GET'],
+			'privelege' => ['guest'],
 			'schema' => require(__DIR__.'/login/login.schema.php'),
 			'route' => require(__DIR__.'/login/login.route.php')
 		],
-    'test1' => [
+    'home' => [
+			'method' => ['GET'],
 			'privelege' => ['guest'],
-			'schema' => require(__DIR__.'/test1/test1.schema.php'),
-			'route' => require(__DIR__.'/test1/test1.route.php')
+			'schema' => require(__DIR__.'/home/home.schema.php'),
+			'route' => require(__DIR__.'/home/home.route.php')
 		],
   ];
 ?>
