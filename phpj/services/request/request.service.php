@@ -2,21 +2,29 @@
   return function() {
     
     // route
-    $route = rtrim(strtok(str_replace('/', '-', substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '.php/') + 5)), '?'), '-');
+    $route = ltrim(rtrim(strtok(str_replace('/', '-', substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '.php/') + 5)), '?'), '-'), '-');
     
     // token
     $token = null;
-    $headers = getallheaders();
-    if (isset($headers['token'])) $token = $headers['token'];
-    if (!isset($token) && isset($headers['TOKEN'])) $token = $headers['TOKEN'];
-    if (!isset($token) && isset($headers['auth'])) $token = $headers['auth'];
-    if (!isset($token) && isset($headers['AUTH'])) $token = $headers['AUTH'];
-    if (!isset($token) && isset($headers['authorization'])) $token = $headers['authorization'];
-    if (!isset($token) && isset($headers['AUTHORIZATION'])) $token = $headers['AUTHORIZATION'];
-    if (!isset($token) && isset($headers['authentication'])) $token = $headers['authentication'];
-    if (!isset($token) && isset($headers['AUTHENTICATION'])) $token = $headers['AUTHENTICATION'];
-    if (!isset($token) && isset($headers['bearer'])) $token = $headers['bearer'];
-    if (!isset($token) && isset($headers['BEARER'])) $token = $headers['BEARER'];
+    if (isset($_COOKIE['myPhpjApp'])) {
+      $cookie = json_decode($_COOKIE['myPhpjApp'], true);
+      if (isset($cookie['token'])) {
+        $token = $cookie['token'];
+      }
+    } 
+    if (!isset($token)) {
+      $headers = getallheaders();
+      if (isset($headers['token'])) $token = $headers['token'];
+      if (!isset($token) && isset($headers['TOKEN'])) $token = $headers['TOKEN'];
+      if (!isset($token) && isset($headers['auth'])) $token = $headers['auth'];
+      if (!isset($token) && isset($headers['AUTH'])) $token = $headers['AUTH'];
+      if (!isset($token) && isset($headers['authorization'])) $token = $headers['authorization'];
+      if (!isset($token) && isset($headers['AUTHORIZATION'])) $token = $headers['AUTHORIZATION'];
+      if (!isset($token) && isset($headers['authentication'])) $token = $headers['authentication'];
+      if (!isset($token) && isset($headers['AUTHENTICATION'])) $token = $headers['AUTHENTICATION'];
+      if (!isset($token) && isset($headers['bearer'])) $token = $headers['bearer'];
+      if (!isset($token) && isset($headers['BEARER'])) $token = $headers['BEARER'];
+    }
 
     // params
     $params = [];

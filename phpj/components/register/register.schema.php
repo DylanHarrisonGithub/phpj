@@ -6,7 +6,7 @@
 	return [
 
 		//
-		// Route params schema here..
+		// Component params schema here..
 		//
 
 	];

@@ -1,6 +1,72 @@
 
 /* phpj generated css */
 
+/* app-main.style.css */
+.app-card {
+  background-color: #fbfbfb;
+  border-radius: 8px;
+  padding: 2px;
+  margin: 4px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 4px 8px 8px #a0a0a0;
+  position: relative;
+} .app-card:hover {
+  background-color: white;
+  box-shadow: 4px 8px 8px #909090;
+}
+
+.app-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.app-panel-left {
+  float: left;
+  width: 38%;
+}
+
+.app-panel-right {
+  float: left;
+  width: 62%;
+}
+/* home.style.css */
+
+/* login.style.css */
+
+/* navbar.style.css */
+.navbar {
+  background-color: #fbfbfb;
+  border-radius: 8px;
+  padding: 2px;
+  margin: 4px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 4px 8px 8px #a0a0a0;
+  position: relative;
+}
+
+.navbar-ul-left {
+  display: inline-block;
+  margin-left: 16px;
+  margin-right: auto;
+  padding: 8px;
+}
+
+.navbar-ul-right {
+  margin-left: auto;
+  margin-right: 16px;
+  padding: 8px;
+  float: right;
+}
+
+.navbar-li {
+  display: inline-block;
+  padding: 6px;
+}
+
+.navbar-a {
+  text-decoration: none;
+}
 /* phpjdemo.style.css */
 .phpjdemocomponent-h1 {
   text-align: center;
@@ -22,3 +88,4 @@
   cursor: pointer;
   box-shadow: 4px 4px 6px black;
 }
+/* register.style.css */
