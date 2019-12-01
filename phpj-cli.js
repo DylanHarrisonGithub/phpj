@@ -77,10 +77,9 @@ let templates = {};
 if (args.length > 2) {
 	templates = {
 	  component: `
-
 // Automatically generated template
 
-module.exports = class ${(args[2].charAt(0).toUpperCase() + args[2].substring(2)).replace('-', '')}{
+module.exports = class ${(args[2].charAt(0).toUpperCase() + args[2].substring(1)).replace('-', '')} {
 
 	constructor(stateID, params) {
 
@@ -92,8 +91,7 @@ module.exports = class ${(args[2].charAt(0).toUpperCase() + args[2].substring(2)
 
 }
 `		,
-	  schema: `
-<?php
+	  schema: `<?php
 
 // Automatically generated template
 
@@ -107,8 +105,7 @@ module.exports = class ${(args[2].charAt(0).toUpperCase() + args[2].substring(2)
 
 ?>
 `		,
-	  template: `
-<?php
+	  template: `<?php
 
 // Automatically generated template
 
@@ -210,29 +207,28 @@ if (args.length > 0) {
     if (args[0].toLowerCase() === 'g' || args[0].toLowerCase() === 'generate') {
 			if (args[1].toLowerCase() === 'c' || args[1].toLowerCase() === 'component') {
 				createDir('/phpj/components/' + args[2]);
-				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.component.js', templates.component);
-				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.schema.php', templates.schema);
+				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.script.js', templates.component);
 				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.template.php', templates.template);
 				createFile('./phpj/components/' + args[2] + '/' + args[2] + '.style.css', "");
-				writeLine('./phpj/components/components.php', 2, `    '${args[2]}' => [
-			'template' => require(__DIR__.'/${args[2]}/${args[2]}.template.php'),
-			'schema' => require(__DIR__.'/${args[2]}/${args[2]}.schema.php')
-		],`);
-				writeLine('./phpj/engine/src/phpj.js', 4, `      '${args[2]}': require('../../components/${args[2]}/${args[2]}.component'),`);
+				writeLine('./phpj/components/components.php', 3, `			case '${args[2]}': return require(__DIR__.'/${args[2]}/${args[2]}.template.php'); break;`);
+				writeLine('./phpj/engine/src/phpj.js', 4, `      '${args[2]}': require('../../components/${args[2]}/${args[2]}.script'),`);
 			} else if (args[1].toLowerCase() === 'r' || args[1].toLowerCase() === 'route') {
 				createDir('/phpj/routes/' + args[2]);
 				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.route.php', templates.route.route);
 				createFile('./phpj/routes/' + args[2] + '/' + args[2] + '.schema.php', templates.route.schema);
-				writeLine('./phpj/routes/routes.php', 2, `    '${args[2]}' => [
-			'method' => ${args.length > 3 ? JSON.stringify([args[3]]) : "['GET']"},
-			'privelege' => ${args.length > 4 ? JSON.stringify(args.slice(4, args.length)) : "['guest']"},
-			'schema' => require(__DIR__.'/${args[2]}/${args[2]}.schema.php'),
-			'route' => require(__DIR__.'/${args[2]}/${args[2]}.route.php')
-		],`);
+				writeLine('./phpj/routes/routes.php', 3, `			case '${args[2]}': return function($part) {
+        switch($part) {
+					case 'method': return ${args.length > 3 ? JSON.stringify([args[3]]) : "['GET']"}; break;
+					case 'privelege': return ${args.length > 4 ? JSON.stringify(args.slice(4, args.length)) : "['guest']"}; break;
+					case 'schema': return require(__DIR__.'/${args[2]}/${args[2]}.schema.php'); break;
+					case 'route': return require(__DIR__.'/${args[2]}/${args[2]}.route.php'); break;
+					default: throw new Exception("PHPJ route '{$route}', part '{$part}' not supported."); break;
+				}
+			}; break;`);
 			} else if (args[1].toLowerCase() === 's' || args[1].toLowerCase() === 'service') {
 				createDir('/phpj/services/' + args[2]);
 				createFile('./phpj/services/' + args[2] + '/' + args[2] + '.service.php', templates.route.route);
-				writeLine('./phpj/services/services.php', 2, `    '${args[2]}' => require(__DIR__.'/${args[2]}/${args[2]}.service.php'),`);
+				writeLine('./phpj/services/services.php', 3, `			case '${args[2]}': return require(__DIR__.'/${args[2]}/${args[2]}.service.php'); break;`);
 			}
 			else if (args[1].toLowerCase() === 'js' || args[1].toLowerCase() === 'jservice') {
 				createDir('/phpj/engine/src/services/' + args[2]);
