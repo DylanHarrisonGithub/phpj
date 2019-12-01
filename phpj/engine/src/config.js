@@ -1,6 +1,6 @@
 module.exports = {
   "APP_NAME": "myPhpjApp",
-  "STORAGE": "COOKIE", // LOCAL, SESSION, COOKIE
+  "STORAGE": "COOKIE", // LOCAL, SESSION, COOKIE, MEMORY
   "ENVIRONMENT": "DEVELOPMENT",
   "URI": {
     "DEVELOPMENT": "http://localhost:80/phpj/",

@@ -7,7 +7,7 @@
 
 		http_response_code(200);
 		header('Content-Type: text/html');
-		return $phpj['components']['app-main']['template']($params, $phpj);
+		return $phpj('components')('App-Main')($params, $phpj);
 
 	}
 

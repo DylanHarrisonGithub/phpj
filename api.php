@@ -7,7 +7,7 @@
   #############################################################
 
   $phpj = require(__DIR__.'/phpj/phpj.php');
-  $request = $phpj['services']['request']();
-  echo $phpj['services']['router']($request, $phpj);
+  $request = $phpj('services')('request')();
+  echo $phpj('services')('router')($request, $phpj);
 
 ?>
